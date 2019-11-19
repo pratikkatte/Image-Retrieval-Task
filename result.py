@@ -61,11 +61,11 @@ def main(args):
             image_sect = list(bboxes[0])
             similar_images.append(image_sect)
             image_section = [similar_images]
-            res_path = result_path.split('/')[1]
+            res_path = result_path.split('/')[-1]
             result_data[res_path] = image_section
 
         else:
-            res_path = result_path.split('/')[1]
+            res_path = result_path.split('/')[-1]
             similar_images = [image_file]
             image_sect = list(bboxes[0])
             similar_images.append(image_sect)
