@@ -88,7 +88,7 @@ def learn_pca(features_data, name, features_dir):
                                                    len(features_data)))
     print("total rmacs shape {}".format(r_macs.shape))
 
-    pca = PCA(n_components=r_macs.shape[1])
+    pca = PCA(n_components=r_macs.shape[1], whiten=True)
     pca.fit(r_macs)
 
     pca_path = join(features_dir, '{}.pca'.format(name))

@@ -1,10 +1,10 @@
 import json
 from os.path import basename, join, isfile
 from functools import lru_cache
-
+import os
 import numpy as np
 from sklearn.externals import joblib
-
+from glob import glob
 from src.model import loadModel
 from src.features import representation_size
 
@@ -16,10 +16,11 @@ class SearchModel:
         self.model = loadModel()
 
         # Load the feature metadata
-        features_basename = basename(features_path)
-        meta_file_path = join(features_path,
-                              '{}.meta'.format(features_basename))
+        meta_file_path = glob(os.path.join(features_path, '*.meta'))[0]
+        features_basename = meta_file_path.split('/')[-1].split('.')[0]
+
         with open(meta_file_path, 'r') as f:
+
             self.feature_metadata = json.load(f)
 
         # Load image representations

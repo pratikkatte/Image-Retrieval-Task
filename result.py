@@ -20,6 +20,9 @@ parser.add_argument('--features', default='features',
 parser.add_argument('--image-dir', default="data/query",
                     help='image directories containing query images')
 
+parser.add_argument('--output-file', default="output.json",
+                    help="name of the output json file. default: output.json")
+
 
 def main(args):
     import numpy as np
@@ -56,17 +59,19 @@ def main(args):
 
         result_path = search_model.get_metadata(results[0])['image']
 
+        image_file_name = image_file.split('.')[0]
+
         if result_path not in result_data:
-            similar_images = [image_file]
+            similar_images = [image_file_name]
             image_sect = list(bboxes[0])
             similar_images.append(image_sect)
             image_section = [similar_images]
-            res_path = result_path.split('/')[-1]
+            res_path = result_path.split('/')[-1].split('.')[0]
             result_data[res_path] = image_section
 
         else:
-            res_path = result_path.split('/')[-1]
-            similar_images = [image_file]
+            res_path = result_path.split('/')[-1].split('.')[0]
+            similar_images = [image_file_name]
             image_sect = list(bboxes[0])
             similar_images.append(image_sect)
 
@@ -76,7 +81,7 @@ def main(args):
         print('{}\t{:.4f}\t{}'.format(result_path, similarities[0], bboxes[0]))
 
 
-    meta_file_name = '{}.json'.format('output')
+    meta_file_name = args.output_file
     with open(meta_file_name, 'w') as f:
         json.dump(result_data, f)
 
