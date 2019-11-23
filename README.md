@@ -22,3 +22,21 @@
 ```
   python result.py
  ```
+
+## Evaluate Model on Test Dataset.
+1. To fetch data from the source. The following execution will download the images and query dataset and save in the data folder.
+```
+ python eval_data.py
+```
+2. Learn the PCA model on the dataset.
+```
+python learnpca.py --features-dir eval_features --image-dir eval_data/sample_testset/images/
+```
+3. Extract features of the images in the dataset.
+```
+python extractor.py --features-dir eval_features/ --image-dir eval_data/sample_testset/images
+```
+4. retrieve similar images and save in predictions.json
+```
+python result.py --features eval_features --image-dir eval_data/sample_testset/crops/ --output-file predictions.json
+```
