@@ -40,3 +40,7 @@ python extractor.py --features-dir eval_features/ --image-dir eval_data/sample_t
 ```
 python result.py --features eval_features --image-dir eval_data/sample_testset/crops/ --output-file predictions.json
 ```
+5. Evaluate Model
+```
+python model_evaluation.py 
+```
