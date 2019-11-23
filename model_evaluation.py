@@ -32,6 +32,8 @@ def avg_precision(expected, predictions):
 def intersection_over_union(expected, exp_bboxes, predictions, pred_bboxes):
 
     def iou(bbox1, bbox2):
+        if bbox1 == 'r':
+            bbox1 = [0,0,0,0]
         x1 = max(bbox1[0], bbox2[0])
         y1 = max(bbox1[1], bbox2[1])
         x2 = min(bbox1[2], bbox2[2])
@@ -56,34 +58,6 @@ def intersection_over_union(expected, exp_bboxes, predictions, pred_bboxes):
         if not correct_prediction:
             ious.append(0.0)
     return ious, correct_items
-
-def intersection_over_union(expected, exp_bboxes, predictions, pred_bboxes):
-    def iou(bbox1, bbox2):
-        x1 = max(bbox1[0], bbox2[0])
-        y1 = max(bbox1[1], bbox2[1])
-        x2 = min(bbox1[2], bbox2[2])
-        y2 = min(bbox1[3], bbox2[3])
-
-        area1 = (bbox1[2] - bbox1[0] + 1) * (bbox1[3] - bbox1[1] + 1)
-        area2 = (bbox2[2] - bbox2[0] + 1) * (bbox2[3] - bbox2[1] + 1)
-        intersect_area = max(0, (x2 - x1 + 1)) * max(0, (y2 - y1 + 1))
-        union_area = area1 + area2 - intersect_area
-        return intersect_area / union_area
-
-    correct_items = 0
-    ious = []
-    for i, expect in enumerate(expected):
-        correct_prediction = False
-        for j, predicted in enumerate(predictions):
-            if predicted == expect:
-                correct_items += 1
-                ious.append(iou(exp_bboxes[i], pred_bboxes[j]))
-                correct_prediction = True
-                break
-        if not correct_prediction:
-            ious.append(0.0)
-    return ious, correct_items
-
 
 def main(args):
 
@@ -116,7 +90,7 @@ def main(args):
         retrieval_precision_sum += avg_precision(grountruth_items, predicted_items)
 
         ious, n_correct = intersection_over_union(grountruth_items, grountruth_items_boxes,
-                                                  predicted_items, grountruth_items_boxes)
+                                                  predicted_items, predicted_items_boxes)
         iou_sum += sum(ious)
         correct_items += n_correct
         total_items += len(ious)
